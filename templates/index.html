@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Machine Learning App</title>
+</head>
+<body>
+    <h1>Machine Learning App</h1>
+    <form id="predictionForm">
+        <label for="inputData">Input Data (comma-separated):</label>
+        <input type="text" id="inputData" name="inputData" required>
+        <button type="submit">Predict</button>
+    </form>
+    <div id="predictionResult"></div>
+
+    <script>
+        document.getElementById("predictionForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const inputData = document.getElementById("inputData").value.split(",").map(Number);
+
+            const response = await fetch("http://127.0.0.1:8000/predict", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ data: inputData }),
+            });
+
+            const result = await response.json();
+            document.getElementById("predictionResult").innerText = `Prediction: ${result.prediction}`;
+        });
+    </script>
+</body>
+</html>
